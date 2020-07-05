@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css" />
+		<script src="./../src/fun.js"></script>
+		<link rel="stylesheet" href="./../src/common.css" />
+		<title>Document</title>
+	</head>
+	<body>
+		<form class="layui-form" action="" style="width: 500px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                  <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+			<div class="layui-form-item " id="img_upload" >
+				<label class="layui-form-label">文件</label>
+				<div class="layui-input-block" >
+					<!-- //TODO -->
+					<input type="file" name="img"/>
+					<span>文件上传</span>
+					<img src="./../src/ia_200000017.jpg" alt="" id="upload_img_show" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="formDemo">
+						立即提交
+					</button>
+				</div>
+			</div>
+		</form>
+		<script src="./../../layuiadmin/layui/layui.js"></script>
+		<script>
+			//Demo
+			layui.use(["form", "layedit"], function () {
+				var form = layui.form;
+				var layedit = layui.layedit;
+				layedit.build("demo"); //建立编辑器
+				//监听提交
+				form.on("submit(formDemo)", function (data) {
+					layer.msg(JSON.stringify(data.field));
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

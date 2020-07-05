@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css" />
+		<title>Document</title>
+		<style>
+			body {
+				margin: 10px;
+			}
+			.layui-table th {
+				text-align: center;
+			}
+			.layui-table td:not(:nth-child(3)) {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top">
+			<button type="button" onclick="add()" class="layui-btn">
+				增加一级分类
+			</button>
+		</div>
+		<div class="main">
+			<table class="layui-table">
+				<colgroup>
+					<col width="150" />
+					<col width="200" />
+					<col />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>层级</th>
+						<th>类别名称</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>网站首页</td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm" onclick="add()">增加</button>
+							<button
+                                type="button"
+                                onclick="edit()"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+                                type="button"
+                                onclick="del()"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---->新闻列表</td>
+						<td>
+							<button
+								type="button"
+								onclick="add()"
+								class="layui-btn layui-btn-sm"
+							>
+								增加
+							</button>
+							<button
+								type="button"
+								onclick="edit()"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+								type="button"
+								onclick="del()"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>网站首页</td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm">增加</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>网站首页</td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm">增加</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>网站首页</td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm">增加</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>网站首页</td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm">增加</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>2</td>
+						<td>网站首页</td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm">增加</button>
+							<button
+								type="button"
+								onclick="edit()"
+								class="layui-btn layui-btn-warm layui-btn-sm"
+							>
+								修改
+							</button>
+							<button
+								type="button"
+								class="layui-btn layui-btn-danger layui-btn-sm"
+							>
+								删除
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+        <script src="./../../layuiadmin/layui/layui.js"></script>
+        <script src="./../src/fun.js"></script>
+		<script>
+			layui.use("layer", function () {
+				var layer = layui.layer;
+			});
+		</script>
+	</body>
+</html>
