@@ -1,0 +1,14 @@
+{include file="common/header"}
+
+		<!-- 新闻叶的主体部分 -->
+		<div id="news" class="container">
+			{include file="common/contact_title"}
+			<div>
+				{switch $type }
+				{case 联系我们 }{include file="contact/contact"}{/case}
+				{case 在线留言}{include file="contact/online"}{/case}
+				{default /}"无页面"
+				{/switch}
+			</div>
+		</div>
+{include file='common/footer'}

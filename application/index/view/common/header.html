@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="__HCSS__/common.css" />
+    <script src="__HJS__/jquery-3.5.1.min.js"></script>
+    <title>为力人力资源</title>
+    <style>
+        /*导航栏上面的当前样式*/
+        .hover {
+            background-color: #008bd3;
+            color:#ececec!important;
+        }
+        /*新闻标题  当前所处的类*/
+        .current_title {
+            background-color: #008bd3!important;
+        }
+        .current_title a{
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+<!-- 公共头部 -->
+<header>
+    <div class="header-main container">
+        <div class="logo clearfix">
+            <a href="javascript:;">
+                <img src="__HIMG__/logo.jpg" alt="" />
+            </a>
+        </div>
+        <div class="right">
+            <div class="right-top">
+                <div class="search">
+                    <input type="text" name="keyword" placeholder="请输入搜索关键字" />
+                    <a href="javascript:;" id="search_btn">
+                        <img src="__HIMG__/search.png" alt="" />
+                    </a>
+                </div>
+                <li>全国服务热线：<span>0791-82203969</span></li>
+            </div>
+            <!--导航栏-->
+            <nav>
+                <ul>
+                    {$link}
+                    {foreach $nav as $v}
+                    <li >
+                        {if $v.linkname==$link}
+                        <a  class="linka hover" href="/{$v.linkname}">{$v.sortname}</a>
+                        {else}
+                        <a class="linka" href="/{$v.linkname}">{$v.sortname}</a>
+                        {/if}
+                        <ul>
+                            {if $v.sortname != '关于我们'}
+                            {foreach $v.children as $son}
+                            <li><a href="/{$v.linkname}?classid={$son.id}">{$son.sortname}</a></li>
+                            {/foreach}
+                            {/if}
+                        </ul>
+
+                    </li>
+                    {/foreach}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+<script>
+    $(function () {
+        $('.linka').on('click',function (e) {
+            // $('.linka').removeClass('hover');
+            // $(this).addClass('hover');
+        })
+        $("nav ul li").hover(function() {
+                $(this).children('ul').css({'display':'block'});
+            },
+            function() {
+                $(this).children('ul').css({'display':'none'});
+            })
+        $("#search_btn").on('click',function (e) {
+            e.preventDefault();
+            const keyword= $("input[name='keyword']").val();
+            if(!keyword) {
+                alert('请输入搜索内容');
+            }else  {
+                location.href="{:url('/index/news')}?keyword="+keyword;
+            }
+        })
+
+    })
+</script>
+<!-- banner图-->
+<div class="banner">
+    <img src="/uploads/{$banner.img}" alt="" />
+</div>

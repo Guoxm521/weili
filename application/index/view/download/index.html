@@ -1,0 +1,52 @@
+{include file='common/header'}
+<!-- 新闻叶的主体部分 -->
+<div class="container" id="news">
+    <div class="title">
+        <h3>下载中心</h3>
+        <p>提供最有价值的人力资源服务和解决方案，持续为客户创造最大的价值</p>
+    </div>
+    <div class="news-content">
+        <div id="download">
+            <ul>
+                <li>
+                    <dd>名称</dd>
+                    <dd>发布时间</dd>
+                    <dd>下载</dd>
+                </li>
+                {volist name="list" id="v"}
+                <li>
+                    <dd>{$v.title}</dd>
+                    <dd>{$v.add_time|date="Y-m-d H:i:s"}</dd>
+                    <dd><a class="download" data-id="{$v.id}" times="{$v.times}" download="{$v.title}" href="/downloads/{$v.file}">立即下载</a>
+                    </dd>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <div id="paging">
+        {$page|raw}
+    </div>
+</div>
+<script>
+    $('.download').on('click',function (e) {
+        const id = $(this).attr("data-id");
+        const times = $(this).attr("times");
+        $.ajax({
+            type:'post',
+            url:"{:url('index/download/times')}",
+            data:{
+                id,
+                times
+            },
+            success:function (res) {
+                console.log(res);
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        })
+    })
+</script>
+
+{include file="common/footer"}

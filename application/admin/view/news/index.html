@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <script src="__JS__/fun.js"></script>
+    <link href="__CSS__/common.css" rel="stylesheet">
+
+    <title>Document</title>
+</head>
+<body>
+
+<div class="layui-card">
+    <div class="layui-card-header" style="padding: 10px;">
+        <div class="layui-inline" lay-filter="search">
+            <input autocomplete="off" class="layui-input"  name="title" placeholder="请输入标题" required
+                   type="text">
+        </div>
+        <div class="layui-inline">
+            <select class="layui-select"  id="sortname" name="sortname">
+                <option value="">请选择呀</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn" id="search-btn" style="margin-top: -3px;">搜索</button>
+        </div>
+    </div>
+
+    <div class="layui-card-body">
+        <button class="layui-btn" onclick="location.href='./add.html'" type="button">添加</button>
+        <table class="layui-table">
+            <colgroup>
+                <col width="150"/>
+                <col width="200"/>
+                <col/>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>标题</th>
+                <th>类别</th>
+                <th>内容</th>
+                <th>浏览次数</th>
+                <th>发布</th>
+                <th>发布时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $res as $v}
+            <tr>
+                <td>{$v.title}</td>
+                <td>{$v.sortname}</td>
+                <td class="get_content" data-id="{$v.id}">查看内容</td>
+                <td>{$v.views}</td>
+                <td>
+                    {if $v.publish == '发布'}
+                    <span class="check_yes" data-id="{$v.id}" value="{$v.publish}"><i
+                            class="layui-icon layui-icon-ok"></i>是</span>
+                    {elseif $v.publish == '草稿'}
+                    <span class="check_no" data-id="{$v.id}" value="{$v.publish}"><i
+                            class="layui-icon layui-icon-close"></i>否</span>
+                    {/if}
+                </td>
+                <td>{$v.add_time}</td>
+                <td>
+                    <button
+                            class="layui-btn layui-btn-warm layui-btn-sm"
+                            data-id="{$v.id}"
+                            onclick="location.href='{:url(\'admin/news/modify\')}?id={$v.id}'"
+                            type="button"
+                    >
+                        修改
+                    </button>
+                    <button
+                            class="layui-btn layui-btn-danger layui-btn-sm delete"
+                            data-id="{$v.id}"
+                            type="button"
+                    >
+                        删除
+                    </button>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <!-- 页码 -->
+    <div id="page"></div>
+    <div style="clear: both;"></div>
+</div>
+
+<script>
+    layui.config({
+        base: '__JS__/'
+    });
+    layui.use(['layui_defind', 'form', 'jquery','layer'], function () {
+        const la_defind = layui.layui_defind;
+        const form = layui.form;
+        const $ = layui.jquery;
+        const layer = layui.layer;
+        form.render(null, 'search');
+        la_defind.getoption("{:url('admin/news/getoption')}");
+        //判断有没有搜索条件
+        if("{$sortname}" || "{$title}") {
+            var search ="&title="+"{$title}"+"&sortname="+"{$sortname}"
+        }else {
+            var search ='';
+        };
+        la_defind.page({$count},6,{$curr},search);
+        la_defind.get_content("{:url('admin/news/getcontent')}", ['800px', '550px']);
+        la_defind.publish("{:url('admin/news/changepublish')}");
+        //元素删除
+        $('.delete').on('click', function () {
+            const id = $(this).attr('data-id');
+            la_defind.delete({id: id}, "{:url('admin/news/delete')}")
+        });
+        $("#search-btn").on('click',function () {
+            const title=$(".layui-card-header input[name='title']").val();
+            const sortname=$(".layui-card-header select[name='sortname'] option:checked").val();
+            if(!title && !sortname) {
+                location.href ="?";
+                return false;
+            }
+            location.href = "?page=1&limit=6"+"&title="+title+"&sortname="+sortname;
+        })
+    });
+</script>
+</body>
+</html>

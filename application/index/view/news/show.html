@@ -1,0 +1,26 @@
+{include file="common/header"}
+		<!-- 新闻展示的主题部分 -->
+		<div id="news-show" class="container">
+			<div class="title">
+				{include file="common/news_title"}
+			</div>
+			<div class="content">
+				<div class="content-title">
+					<h1>{$res.title}</h1>
+					<p>
+						<span>发布时间：{$res.add_time|date="Y-m-d H:i:s"}</span>
+						<span>浏览次数:{$res.views}</span>
+					</p>
+				</div>
+				<div class="content-main">
+					{$res.content|raw}
+				</div>
+            </div>
+            <div class="next">
+				<li>上一篇：<a href="{:url('index/news/show')}?classid={$classid}&id={$pre.id}">{$pre.title|default="没有了"}
+				</a></li>
+                <li>下一篇：<a href="{:url('index/news/show')}?classid={$classid}&id={$next.id}">{$next.title|default="没有了"}
+				</a></li>
+            </div>
+        </div>
+   {include file="common/footer"}

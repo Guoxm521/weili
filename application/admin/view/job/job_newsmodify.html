@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+		<script src="__JS__/fun.js"></script>
+		<link rel="stylesheet" href="__CSS__/common.css" />
+		<script src="__JS__/layuiadmin/layui/layui.js"></script>
+		<link
+			rel="stylesheet"
+			href="__JS__/utf8-php/themes/default/css/umeditor.min.css"
+		/>
+		<script src="__JS__/utf8-php/third-party/jquery.min.js"></script>
+		<script src="__JS__/utf8-php/umeditor.config.js"></script>
+		<script src="__JS__/utf8-php/umeditor.min.js"></script>
+		<script src="__JS__/utf8-php/lang/zh-cn/zh-cn.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="layui-card">
+			<div class="layui-card-header">职场快讯内容修改</div>
+			<div class="layui-card-body">
+				<div class="layui-form" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">标题</label>
+						<div class="layui-input-block">
+							<input
+								type="text"
+								name="title"
+								required
+								lay-verify="required"
+								placeholder="请输入标题"
+								autocomplete="off"
+								class="layui-input"
+								style="width: 500px;"
+							/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">类别</label>
+						<div class="layui-input-block" style="width: 500px;">
+							<select name="sortname" id="sortname" lay-verify="required">
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">发布</label>
+						<div class="layui-input-block">
+							<input type="radio" name="publish" value="发布" title="发布" />
+							<input
+								type="radio"
+								name="publish"
+								value="草稿"
+								title="草稿"
+								checked
+							/>
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">内容</label>
+						<div class="layui-input-block">
+							<script
+								type="text/plain"
+								id="myEditor"
+								style="width: 1000px; height: 600px;"
+							></script>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="formDemo">
+								立即提交
+							</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			//实例化编辑器
+			const um = UM.getEditor("myEditor");
+
+			// 获得内容
+			function getContent() {
+				const arr = [];
+				arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+				arr.push("内容为：");
+				arr.push(UM.getEditor("myEditor").getContent());
+			}
+
+			// 插入html内容
+			function insertHtml() {
+				const value = prompt("插入html代码", "");
+				um.execCommand("insertHtml", value);
+			}
+
+			//Demo
+			layui.config({
+				base: "__JS__/",
+			});
+			layui.use(["form", "layedit", "layui_defind"], function () {
+				const form = layui.form;
+				const layedit = layui.layedit;
+				const la_defind = layui.layui_defind;
+				layedit.build("demo"); //建立编辑器
+				//获得选项
+				la_defind.getoption("{:url('admin/job/jobnews_getoption')}");
+				//获取id 将原有内容添加到里面
+				const id = la_defind.geturl()['id'];
+				$.ajax({
+					type: 'post',
+					url: "{:url('admin/job/jobnews_selectbyid')}",
+					data: {
+						id: id
+					},
+					dataType: 'json',
+					success: function (res) {
+						console.log(res);
+						if (res.code === 2) {
+							//TODO 待完善 获得错误码不会立即跳转
+							location.href = "{:url('admin/error/error404')}";
+						}
+						if (res.code === 1) {
+							//发送ajax请求  获得选项  渲染到页面
+							$("#sortname").val(res.result.sortname);
+							$("input[name='title']").val(res.result.title);
+							$("input[value="+res.result.publish+"]").prop('checked',true);
+							um.execCommand("insertHtml", res.result.content);
+							form.render();
+						}
+					}
+				})
+
+				//监听提交
+				form.on("submit(formDemo)", function (data) {
+					// layer.msg(JSON.stringify(data.field));
+					const title = $("input[name='title']").val();
+					const sortname = $("select option:checked").val();
+					const publish = $("input[name='publish']:checked").val();
+					const content = UM.getEditor("myEditor").getContent();
+					const formData = new FormData();
+					formData.append('title', title);
+					formData.append('sortname', sortname);
+					formData.append('publish', publish);
+					formData.append('content', content);
+					formData.append('id',id);
+					// 添加数据发送的请求
+					la_defind.addfiles("{:url('admin/job/jobnews_update')}", formData, '{:url("admin/job/job_news")}');
+				});
+			})
+			;
+		</script>
+	</body>
+</html>

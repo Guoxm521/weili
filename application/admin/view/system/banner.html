@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+        <script src="__JS__/fun.js"></script>
+        <link rel="stylesheet" href="__CSS__/common.css">
+        <script src="__JS__/layuiadmin/layui/layui.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+
+		<div class="layui-card">
+            <div class="layui-card-header" style="padding: 10px;">
+            <button type="button" class="layui-btn add">添加</button>
+            </div>
+			<div class="layui-card-body">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="200" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>所属类别</th>
+                            <th>图片</th>
+                            <th>显示</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $res as $v}
+                        <tr>
+                            <td>{$v.title}</td>
+                            <td>{$v.sortname}</td>
+                            <td class="get_content" data-id="{$v.id}">查看图片</td>
+                            <td>
+                                {if $v.publish == '发布'}
+                                <span class="check_yes" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-ok"></i>是</span>
+                                {elseif $v.publish == '草稿'}
+                                <span class="check_no" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-close"></i>否</span>
+                                {/if}
+                            </td>
+                            <td>{$v.add_time}</td>
+                            <td>
+                                <button
+                                        class="layui-btn layui-btn-warm layui-btn-sm modify"
+                                        data-id="{$v.id}"
+                                        type="button"
+                                >
+                                    修改
+                                </button>
+                                <button
+                                        class="layui-btn layui-btn-danger layui-btn-sm delete"
+                                        data-id="{$v.id}"
+                                        type="button"
+                                >
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <script >
+            layui.config({
+                base:'__JS__/'
+            });
+            layui.use(['layui_defind','form','layer','jquery'],function() {
+                const la_defind = layui.layui_defind;
+                const form = layui.form;
+                const layer = layui.layer;
+                const $ = layui.jquery;
+                const trLen = $('tbody tr').length;
+                $('.add').on('click',function () {
+                    if({$optionlenLen} === trLen){
+                        layer.msg('已经全部添加完成，无法再进行添加操作！',{time:2000});
+                    }else {
+                        la_defind.add('banner图添加',["600px","540px"],"{:url('admin/system/banner_add')}")
+                    }
+                });
+                //修改发布情况
+                la_defind.publish("{:url('admin/system/banner_changepublish')}");
+                //元素删除
+                $('.delete').on('click', function () {
+                    const id = $(this).attr('data-id');
+                    la_defind.delete({id: id}, "{:url('admin/system/banner_delete')}")
+                });
+                //点击查看图片
+                $(".get_content").on("click", function () {
+                    const id = $(this).attr('data-id');
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('admin/system/banner_getcontent')}",
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            const imgsrc = "/uploads/"+res[0].img;
+                            console.log(imgsrc);
+                            layer.open({
+                                type: 1,
+                                title:res[0].title,
+                                closeBtn: 1,
+                                skin: "layui-layer-rim", //加上边框
+                                area: ['500px','380px'], //宽高
+                                content:"<img src='"+imgsrc+"'>"
+                                // "<img src='./../src/ia_200000017.jpg'>",
+                            });
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                });
+                //修改页面
+                $('.modify').on('click',function () {
+                    const id = $(this).attr('data-id');
+                    la_defind.add('修改页面',["600px","540px"],"{:url('admin/system/banner_modify')}?id="+id+"");
+                })
+            });
+        </script>
+	</body>
+</html>

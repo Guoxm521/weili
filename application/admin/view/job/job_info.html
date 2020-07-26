@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+        <script src="__JS__/fun.js"></script>
+        <script src="__JS__/layuiadmin/layui/layui.js"></script>
+        <link rel="stylesheet" href="__CSS__/common.css">
+
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="layui-card">
+            <div class="layui-card-header" style="padding: 10px;">
+                <button type="button" class="layui-btn" onclick="location.href='./job_infoadd.html'">添加</button>
+            </div>
+            
+			<div class="layui-card-body">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="180" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>招聘岗位</th>
+                            <th>招聘部门</th>
+                            <th>学历要求</th>
+                            <th>预计薪资</th>
+                            <th>需求人数</th>
+                            <th>岗位职责</th>
+                            <th>岗位要求</th>
+                            <th>福利待遇</th>
+                            <th>是否发布</th>
+                            <th>添加时间</th>
+                            <th width="150px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $res as $v}
+                        <tr>
+                            <td>{$v.station}</td>
+                            <td>{$v.department}</td>
+                            <td>{$v.degree}</td>
+                            <td>{$v.salary}</td>
+                            <td>{$v.people}</td>
+                            <td class="get_detail" data-id="{$v.id}" type="response">查看详情</td>
+                            <td class="get_detail" data-id="{$v.id}" type="demand">查看详情</td>
+                            <td class="get_detail" data-id="{$v.id}" type="benefit">查看详情</td>
+                            <td>
+                                {if $v.publish == '发布'}
+                                <span class="check_yes" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-ok"></i>是</span>
+                                {elseif $v.publish == '草稿'}
+                                <span class="check_no" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-close"></i>否</span>
+                                {/if}
+                            </td>
+                            <td>{$v.add_time}</td>
+                            <td>
+                                <button
+                                        class="layui-btn layui-btn-warm layui-btn-sm"
+                                        data-id="{$v.id}"
+                                        onclick="location.href='{:url(\'admin/job/job_infomodify\')}?id={$v.id}'"
+                                        type="button"
+                                >
+                                    修改
+                                </button>
+                                <button
+                                        class="layui-btn layui-btn-danger layui-btn-sm delete"
+                                        data-id="{$v.id}"
+                                        type="button"
+                                >
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <script >
+            layui.config({
+                base:'__JS__/'
+            });
+            layui.use(['layui_defind','form','jquery','layer'],function() {
+                const la_defind = layui.layui_defind;
+                const form = layui.form;
+                const $ = layui.jquery;
+                const layer = layui.layer;
+                la_defind.page({$count},7,{$curr});
+                la_defind.get_content();
+                la_defind.publish("{:url('admin/job/jobinfo_changepublish')}");
+                //元素删除
+                $('.delete').on('click', function () {
+                    const id = $(this).attr('data-id');
+                    la_defind.delete({id: id}, "{:url('admin/job/jobinfo_delete')}")
+                });
+                //获取详情  因为与其他模块不一样  需要单独写
+                $('.get_detail').on('click',function () {
+                    const id = $(this).attr('data-id');
+                    const type = $(this).attr('type');
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('admin/job/jobinfo_getcontent')}",
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            if(type === "demand") {
+                                var content =res[0].demand;
+                                var title ='岗位要求';
+                            }
+                            if(type === "response") {
+                                var content =res[0].response;
+                                var title ='岗位职责';
+                            }
+                            if(type === "benefit") {
+                                var content =res[0].benefit;
+                                var title = '福利待遇';
+                            }
+                            layer.open({
+                                type: 1,
+                                title:title,
+                                closeBtn: 1,
+                                skin: "layui-layer-rim", //加上边框
+                                area: ['400px','300px'], //宽高
+                                content:content
+                                // "<img src='./../src/ia_200000017.jpg'>",
+                            });
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                })
+            });
+
+
+        </script>
+	</body>
+</html>

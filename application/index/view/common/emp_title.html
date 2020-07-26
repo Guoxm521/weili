@@ -1,0 +1,13 @@
+<div class="title">
+    <h3>员工服务</h3>
+    <p>提供最有价值的人力资源服务和解决方案，持续为客户创造最大的价值</p>
+    <ul>
+        {foreach $news_nav as $v}
+        {if $v.id == $classid}
+        <li class="current_title"><a href="id={$v.id}">{$v.sortname}</a></li>
+        {else}
+        <li><a href="{:url('index/empservice/index')}?classid={$v.id}">{$v.sortname}</a></li>
+        {/if}
+        {/foreach}
+    </ul>
+</div>

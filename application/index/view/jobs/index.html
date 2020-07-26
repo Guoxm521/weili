@@ -1,0 +1,33 @@
+{include file='common/header'}
+        
+        <!-- 新闻叶的主体部分 -->
+        <div id="news" class="container">
+            {include file='common/jobs_title'}
+            <div>
+                {if $type == 3}
+                    {include file="jobs/news"}
+                {elseif $type==2}
+                    {include file="jobs/message"}
+                {else}
+                    {include file="jobs/info"}
+                {/if}
+            </div>
+        </div>
+
+{include file='common/footer'}
+        <script>
+            $(function() {
+                var flag = 1;
+                $('.bg1').on('click',function() {
+                   if(flag==1) {
+                       $(this).children('ul').show();
+                       flag =2;
+                   }else {
+                       $(this).children('ul').hide();
+                       flag=1;
+                   }
+                })
+            })
+        </script>
+	</body>
+</html>

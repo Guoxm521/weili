@@ -1,0 +1,34 @@
+<div class="news-content">
+    <div id="contactus">
+        <div class="dizhi">
+            {volist name='res' id="v"}
+            {if $v.title == '公司名称'}
+            <h5>{$v.content}</h5>
+            {else}
+            <p>{$v.title}：{$v.content}</p>
+            {/if}
+            {/volist}
+        </div>
+        <div class="map" id="map">
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=LGXAFI3amPiRKWTXuqjLSiUIC3qvXAt6"></script>
+<script>
+    const map = new BMapGL.Map("map");
+    const point = new BMapGL.Point(116.331398,39.897445);
+    map.centerAndZoom(point, 15);
+    map.enableScrollWheelZoom(true);
+    var scaleCtrl = new BMapGL.ScaleControl();  // 添加比例尺控件
+    map.addControl(scaleCtrl);
+    var zoomCtrl = new BMapGL.ZoomControl();  // 添加比例尺控件
+    map.addControl(zoomCtrl);
+    const opts = {
+        width: 130,     // 信息窗口宽度
+        height: 50,    // 信息窗口高度
+        title:"地址"
+    }
+    const infoWindow = new BMapGL.InfoWindow("江西省南昌市顺外路君嘉广场1号楼10楼", opts);  // 创建信息窗口对象
+    map.openInfoWindow(infoWindow, map.getCenter());
+</script>

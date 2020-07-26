@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/fun.js"></script>
+    <link href="__CSS__/common.css" rel="stylesheet"/>
+    <link
+            href="__JS__/utf8-php/themes/default/css/umeditor.min.css"
+            rel="stylesheet"
+    />
+    <script src="__JS__/utf8-php/third-party/jquery.min.js"></script>
+    <script src="__JS__/utf8-php/umeditor.config.js"></script>
+    <script src="__JS__/utf8-php/umeditor.min.js"></script>
+    <script src="__JS__/utf8-php/lang/zh-cn/zh-cn.js"></script>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <title>Document</title>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">新闻修改</div>
+    <div class="layui-card-body">
+        <div action="" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input
+                            autocomplete="off"
+                            class="layui-input"
+                            lay-verify="required"
+                            name="title"
+                            placeholder="请输入标题"
+                            required
+                            style="width: 500px;"
+                            type="text"
+                    />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">类别</label>
+                <div class="layui-input-block" style="width: 500px;">
+                    <select id="sortname" lay-verify="required" name="sortname">
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">发布</label>
+                <div class="layui-input-block">
+                    <input name="publish" title="发布" type="radio" value="发布"/>
+                    <input
+                            checked
+                            name="publish"
+                            title="草稿"
+                            type="radio"
+                            value="草稿"
+                    />
+                </div>
+            </div>
+            <div class="layui-form-item" id="img_upload">
+                <label class="layui-form-label" >封面</label>
+                <div class="layui-input-block">
+                    <!-- //TODO -->
+                    <input type="file" name="img" id="files" />
+                    <span>文件上传</span>
+                    <img src=""   id="upload_img_show" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">内容</label>
+                <div class="layui-input-block">
+                    <script
+                            id="myEditor"
+                            style="width: 1000px; height: 600px;"
+                            type="text/plain"
+                    ></script>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="formDemo" lay-submit>
+                        立即提交
+                    </button>
+                    <button class="layui-btn layui-btn-primary" type="reset">
+                        重置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //实例化编辑器
+    const um = UM.getEditor("myEditor");
+
+    // 获得内容
+    function getContent() {
+        const arr = [];
+        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+        arr.push("内容为：");
+        arr.push(UM.getEditor("myEditor").getContent());
+    }
+
+    // 插入html内容
+    function insertHtml() {
+        const value = prompt("插入html代码", "");
+        um.execCommand("insertHtml", value);
+    }
+
+    //Demo
+    layui.config({
+        base: "__JS__/",
+    });
+    layui.use(["form", "layedit", "layui_defind"], function () {
+        const form = layui.form;
+        const layedit = layui.layedit;
+        const la_defind = layui.layui_defind;
+        layedit.build("demo"); //建立编辑器
+        //获得选项
+        la_defind.getoption("{:url('admin/news/getoption')}");
+        la_defind.showimg(['jpg','gif','png'],true);
+        //获取id 将原有内容添加到里面
+        const id = la_defind.geturl()['id'];
+        $.ajax({
+            type: 'post',
+            url: "{:url('admin/news/selectbyid')}",
+            data: {
+                id: id
+            },
+            dataType: 'json',
+            success: function (res) {
+                console.log(res);
+                if (res.code === 2) {
+                    //TODO 待完善 获得错误码不会立即跳转
+                    location.href = "{:url('admin/error/error404')}";
+                }
+                if (res.code === 1) {
+                    //发送ajax请求  获得选项  渲染到页面
+                    $("#sortname").val(res.result.sortname);
+                    $("input[name='title']").val(res.result.title);
+                    $("input[value="+res.result.publish+"]").prop('checked',true);
+                    $("#upload_img_show").attr('src','/uploads/'+res.result.img);
+                    um.execCommand("insertHtml", res.result.content);
+                    form.render();
+                }
+            }
+        })
+
+        //监听提交
+        form.on("submit(formDemo)", function (data) {
+            const file_obj = document.getElementById('files').files[0];
+            const title = $("input[name='title']").val();
+            const sortname = $("select option:checked").val();
+            const publish = $("input[name='publish']:checked").val();
+            const content = UM.getEditor("myEditor").getContent();
+            const formData = new FormData();
+            if(file_obj) {
+                formData.append('files',file_obj);
+                formData.append('isupfile','true');
+            };
+            formData.append('title', title);
+            formData.append('sortname', sortname);
+            formData.append('publish', publish);
+            formData.append('content', content);
+            formData.append('id',id);
+            // 添加数据发送的请求
+            la_defind.addfiles("{:url('admin/news/update')}", formData, '{:url("admin/news/index")}');
+        });
+    })
+    ;
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+{include file="common/header"}
+		<!-- 行业资讯小工具 -->
+		<div class="main1 container">
+			<div class="left">
+				<div class="left-title">
+					<li class="on" index="1">公司动态</li>
+					<li index="2">行业快讯</li>
+					<a href="{:url('index/news/index')}">更多>></a>
+				</div>
+				<div class="left-main">
+					<ul style="display: block;" index="1">
+                        {volist name="$dongtai" id="v"}
+						<li>
+							<img src="/uploads/{$v.img}" alt="" />
+							<a href="{:url('index/news/show')}?classid=40&id={$v.id}">{$v.title|mb_substr=0,15}</a>
+							<p>
+								{$v.content|strip_tags|trim|mb_substr=0,30}...
+							</p>
+						</li>
+                        {/volist}
+					</ul>
+					<ul style="display: none;" index="2">
+                        {volist name="kuaixun" id="v"}
+						<li>
+							<img src="/uploads/{$v.img}" alt="" />
+							<a href="{:url('index/news/show')}?classid=41&id={$v.id}">{$v.title|mb_substr=0,15}...</a>
+							<p>
+                                {$v.content|strip_tags|trim|mb_substr=0,30}...
+							</p>
+						</li>
+                        {/volist}
+					</ul>
+				</div>
+			</div>
+			<div class="middle">
+				<div class="left-title">
+					<li class="on" index="1">政策法规</li>
+					<a href="{:url('index/entservice/index')}?classid=42">更多>></a>
+				</div>
+				<div class="middle-main">
+                    {volist name="$zhengce" id="v"}
+					<li style="overflow:hidden">
+						<a href="{:url('index/news/show')}?classid=42&id={$v.id}" style="overflow: hidden;text-overflow: ellipsis;">{$v.title|strip_tags|trim|mb_substr=0,40}</a
+						>
+					</li>
+                    {/volist}
+				</div>
+			</div>
+			<div class="right">
+				<li>
+					<a href="javascript:;">
+                        <img src="__HIMG__/sb.png" alt="" />
+                        <p>社保查询</p>
+                    </a>
+				</li>
+				<li>
+                    <a href="javascript:;">
+                        <img src="__HIMG__/gjj.png" alt="" />
+                        <p>公积金查询</p>
+                    </a>
+                </li>
+				<li>
+                    <a href="javascript:;">
+                        <img src="__HIMG__/cx.png" alt="" />
+                        <p>成绩查询</p>
+                    </a>
+                </li>
+				<li>
+                    <a href="javascript:;">
+                        <img src="__HIMG__/xl.png" alt="" />
+                        <p>学历提升</p>
+                    </a>
+                </li>
+				<li>
+                    <a href="javascript:;">
+                        <img src="__HIMG__/zs.png" alt="" />
+                        <p>招生简章</p>
+                    </a>
+                </li>
+				<li>
+                    <a href="javascript:;">
+                        <img src="__HIMG__/bm.png" alt="" />
+                        <p>网上报名</p>
+                    </a>
+                </li>
+			</div>
+        </div>
+        <!-- 招聘求职 -->
+        <div class="main2 ">
+            <div class="container">
+                <div class="top-title">
+                    <h2>招聘求职</h2>
+                    <p>江西为力人力资源服务有限公司为企业提供最好、最专业的服务外包、招聘猎头、员工福利和人事服务等相关人力资源解决方案</p>
+                </div>
+                <div class="bottom-main">
+                    <div class="left">
+                        <div class="left-title">
+                            <li class="on" index="1">招聘信息</li>
+                            <a href="{:url('index/jobs/index')}">更多>></a>
+                        </div>
+                        <div class="left-main clearfix">
+                            <img src="__HIMG__/ia_100000000.jpg" alt="">
+                            <ul>
+                                {volist name="jobinfo" id="v"}
+                                <li><a href="{:url('index/jobs/index')}">{$v.department}</a><span>{$v.station}</span></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="left-title">
+                            <li class="on" index="1">在线求职</li>
+                        </div>
+                        <div class="right-main">
+                            <table>
+                                <tr>
+                                    <td>姓名：</td>
+                                    <td><input type="text" name="name"></td>
+                                </tr>
+                                <tr>
+                                    <td>性别：</td>
+                                    <td>
+                                        <input type="radio" name="sex" checked value="男">男
+                                        <input type="radio" name="sex" value="女">女
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>手机号码：</td>
+                                    <td><input type="text" name="tel"></td>
+                                </tr>
+                                <tr>
+                                    <td>意向工作：</td>
+                                    <td><input type="text" name="work"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input type="button" value="提交"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 核心服务 -->
+        <div class="main3 container">
+            <div class="top-title">
+                <h2>核心服务</h2>
+                <p>江西为力人力资源服务有限公司为企业提供最好、最专业的服务外包、招聘猎头、员工福利和人事服务等相关人力资源解决方案</p>
+            </div>
+            <div class="bottom-main">
+                {volist name="ent" id="v"}
+                <li class="part1">
+                    <a href="{:url('index/entservice/index')}?classid=49">
+                        <img src="/uploads/{$v.img}" alt="">
+                        <h4>{$v.title}</h4>
+                        <p>{$v.content|raw|strip_tags|trim|mb_substr=0,30}...</p>
+                    </a>
+                </li>
+                {/volist}
+            </div>
+        </div>
+        <!-- 友情链接 -->
+        <div class="link">
+            <div class="container">
+                <span>友情链接：</span>
+                <ul>
+                    {volist name='links' id="v"}
+                    <li>
+                        <a href="{$v.link}">{$v.title}</a>
+                        <span>|</span>
+                    </li>
+                   {/volist}
+                </ul>
+            </div>
+        </div>
+	{include file="common/footer"}
+	</body>
+	<script>
+		$(function () {
+			$(".left-title li").hover(function () {
+				$(this).addClass("on").siblings("li").removeClass("on");
+				const index = $(this).attr("index");
+				$(".left-main ul[index=" + index + "]")
+					.show()
+					.siblings("ul")
+					.hide();
+			});
+            $("nav ul li").hover(function() {
+                $(this).children('ul').css({'display':'block'});
+            },
+            function() {
+                $(this).children('ul').css({'display':'none'});
+            })
+		});
+
+        $('input[type="button"]').on("click",function () {
+            const name = $("input[name='name']").val();
+            const sex = $("input[name='sex']:checked").val()
+            const tel = $("input[name='tel']").val();
+            const work = $("input[name='work']").val();
+            if(!name || !tel || !work ) {
+                alert("请输入完整的数据");
+            }else if( !/^1(3|4|5|6|7|8|9)\d{9}$/.test(tel)) {
+                alert('手机号错误，请重新填写')
+            }else {
+                $.ajax({
+                    type:'post',
+                    url:"{:url('index/jobs/save')}",
+                    data:{
+                        name,
+                        tel,
+                        work,
+                        sex,
+                    },
+                    dataType:'json',
+                    success:function (res) {
+                        if(res.code==1) {
+                            alert(res.msg)
+                        }else {
+                            alert(res.msg);
+                        }
+                        $("input[name='name']").val("");
+                        $("input[name='tel']").val("");
+                        $("input[name='work']").val("");
+                    }
+                })
+            }
+        })
+	</script>
+
+</html>

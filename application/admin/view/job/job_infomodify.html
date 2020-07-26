@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+		<script src="__JS__/fun.js"></script>
+		<link rel="stylesheet" href="__CSS__/common.css" />
+        <script src="__JS__/layuiadmin/layui/layui.js"></script>
+        <title>Document</title>
+        <style>
+            .layui-layedit {
+                height: 150px;
+            }
+            .layui-form-item {
+                margin-top: 35px;
+            }
+        </style>
+	</head>
+	<body>
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-container">  
+                    <div class="layui-row">
+                          <div class="layui-col-md5">
+                            <div class="layui-form" action="post" >
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">招聘岗位</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="station"
+                                        id="station"
+                                        placeholder="请输入内容"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">招聘部门</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="department"
+                                        id="department"
+                                        placeholder="请输入内容"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学历要求</label>
+                                <div class="layui-input-block">
+                                    <select name="degree" id="degree">
+                                        <option value=""></option>
+                                        <option value="小学及以上">小学及以上</option>
+                                        <option value="1">初中及以上</option>
+                                        <option value="初中及以上">中专及以上</option>
+                                        <option value="大专及以上">大专及以上</option>
+                                        <option value="本科">本科</option>
+                                        <option value="硕士">硕士</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">预计薪资</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="salary"
+                                        id="salary"
+                                        placeholder="2000-4000"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">招聘人数</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="number"
+                                        name="people"
+                                        id="people"
+                                        placeholder="请输入内容"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">是否发布</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="publish" value="发布" title="发布" />
+                                    <input type="radio" name="publish" value="草稿" title="草稿" checked />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn submit"  lay-submit lay-filter="formDemo">
+                                        立即提交
+                                    </button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                          </div>
+                          <div class="layui-col-md7">
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">岗位职责</label>
+                                <div class="layui-input-block">
+                                    <textarea id="response" name="response" style="display: none;"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">岗位要求</label>
+                                <div class="layui-input-block">
+                                    <textarea id="demand" name="demand" style="display: none;"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">福利待遇</label>
+                                <div class="layui-input-block">
+                                    <textarea id="benefit" name="benefit" style="display: none;"></textarea>
+                                </div>
+                            </div>
+
+                            </div>
+                    </div>
+            </div>
+          </div>
+		<script>
+			//Demo
+			layui.config({
+				base: "__JS__/",
+			});
+			layui.use(["form", "layedit", "layui_defind",'jquery'], function () {
+				const form = layui.form;
+				const layedit = layui.layedit;
+                const la_defind = layui.layui_defind;
+                const $ = layui.jquery;
+				const response1=layedit.build('response',{
+                    height:100
+                });
+				const demand1 = layedit.build("demand",{
+                    height:100
+                });
+				const benefit1= layedit.build("benefit",{
+                    height:100
+                });
+                //获取id 将原有内容添加到里面
+                const id = la_defind.geturl()['id'];
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('admin/job/jobinfo_selectbyid')}",
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        console.log(res);
+                        if (res.code === 2) {
+                            //TODO 待完善 获得错误码不会立即跳转
+                            location.href = "{:url('admin/error/error404')}";
+                        }
+                        if (res.code === 1) {
+                            //发送ajax请求  获得选项  渲染到页面
+                            $("#station").val(res.result.station);
+                            $("#department").val(res.result.department);
+                            $("#degree").val(res.result.degree);
+                            $("#salary").val(res.result.salary);
+                            $("#people").val(res.result.people);
+                            $("input[value="+res.result.publish+"]").prop('checked',true);
+                            $("#response").val(res.result.response);
+                            $("#benefit").val(res.result.benefit);
+                            $("#demand").val(res.result.demand);
+                            form.render();
+                        }
+                    }
+                })
+				//监听提交
+                form.on("submit(formDemo)",function (data) {
+                    const response = layedit.getContent(response1);
+                    const demand = layedit.getContent(demand1);
+                    const benefit = layedit.getContent(benefit1);
+                    const station = $("input[name='station']").val();
+                    const department = $("input[name='department']").val();
+                    const degree = $("#degree option:checked").val();
+                    const salary = $("input[name='salary']").val();
+                    const people = $("input[name='people']").val();
+                    const publish = $("input[name='publish']:checked").val();
+                    const formData = new FormData();
+                    formData.append('response',response);
+                    formData.append('demand',demand);
+                    formData.append('benefit',benefit);
+                    formData.append('station',station);
+                    formData.append('department',department);
+                    formData.append('degree',degree);
+                    formData.append('salary',salary);
+                    formData.append('people',people);
+                    formData.append('publish',publish);
+                    formData.append('id',id);
+                    // 添加数据发送的请求
+                    la_defind.addfiles("{:url('admin/job/jobinfo_update')}",formData,'{:url("admin/job/job_info")}');
+                })
+			});
+		</script>
+	</body>
+</html>

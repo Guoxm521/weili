@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/layuiadmin//layui/layui.js"></script>
+    <title>Document</title>
+    <style>
+        .layui-form {
+            width: 500px;
+            margin-left: -20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="sortname" placeholder="请输入分类名称" required
+                   autofocus type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">链接名称</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input"  name="linkname" placeholder="请输入链接名称"
+                   type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="formDemo" lay-submit>立即提交</button>
+            <button class="layui-btn layui-btn-primary layer-close" type="button">取消</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        base: '__JS__/'
+    })
+    layui.use(['form', 'jquery', 'layui_defind','layer'], function () {
+        const form = layui.form;
+        const $ = layui.jquery;
+        const layer = layui.layer;
+        const la_defind = layui.layui_defind;
+
+        var parent_id = la_defind.geturl().id;
+        const type = la_defind.geturl().type;
+        console.log(type);
+        if (!parent_id) {
+            parent_id = 0;
+        }
+        //当传来的为修改事件时   需要先获得修改的值
+        if(type === 'change') {
+            $.ajax({
+                type:'post',
+                url:'/admin/sort/getcontent',
+                data:{
+                    id:parent_id
+                },
+                success:function (res) {
+                //    赋值
+                    $("input[name='sortname']").val(res.sortname);
+                    $("input[name='linkname']").val(res.linkname);
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            })
+        }
+        //点击关闭按钮  关闭弹窗
+        $(".layer-close").on('click', function () {
+            parent.layer.closeAll();
+        });
+        //监听提交
+        form.on('submit(formDemo)', function () {
+            const sortname = $("input[name='sortname']").val();
+            const linkname = $("input[name='linkname']").val();
+            if (type == 'change') {
+                //    修改的话走这个ajax请求
+                $.ajax({
+                    type:'post',
+                    url:'/admin/sort/update',
+                    data:{
+                        sortname: sortname,
+                        linkname: linkname,
+                        parent_id: parent_id,
+                    },
+                    success:function (res) {
+                        parent.layer.closeAll();
+                        parent.location.reload();
+                    },
+                    error:function (error) {
+                        console.log(error);
+                    }
+                })
+            } else {
+                //    添加的话走这个ajax请求
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/sort/save',
+                    data: {
+                        sortname: sortname,
+                        linkname: linkname,
+                        parent_id: parent_id,
+                    },
+                    success: function () {
+                        parent.layer.closeAll();
+                        parent.location.reload();
+                        console.log(1);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                })
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

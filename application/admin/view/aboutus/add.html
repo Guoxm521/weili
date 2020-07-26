@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/fun.js"></script>
+    <link href="__CSS__/common.css" rel="stylesheet"/>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <title>Document</title>
+    <style>
+        .upload_img_show {
+            display: inline-block;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">添加内容</div>
+    <div class="layui-card-body">
+        <div  class="layui-form" style="width: 800px;" lay-filter="sortname">
+            <div class="layui-form-item">
+                <label class="layui-form-label">类别</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="sortname" id="sortname">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item " id="img_upload">
+                <label class="layui-form-label">图片</label>
+                <div class="layui-input-block">
+                    <!-- //TODO -->
+                    <input multiple="multiple" name="img[]" type="file" id="files"/>
+                    <span>文件上传</span>
+                    <div id="img_box">
+                        <img alt="" class="upload_img_show" src="__IMG__/ia.jpg"/>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">内容</label>
+                <div class="layui-input-block">
+							<textarea
+                                    id="demo"
+                                    name="content"
+                                    placeholder="请输入内容"
+                                    style="display: none;"
+                            ></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">发布</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="publish" value="发布" title="发布">
+                    <input type="radio" name="publish" value="草稿" title="草稿" checked>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="formDemo" lay-submit >
+                        立即提交
+                    </button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    layui.config({
+        base: '__JS__/'
+    })
+    layui.use(["form", "layedit", 'layui_defind','jquery'], function () {
+        const form = layui.form;
+        const layedit = layui.layedit;
+        const $ = layui.jquery;
+        const la_defind = layui.layui_defind;
+        //发送ajax请求  获得选项  渲染到页面
+        la_defind.getoption("{:url('admin/aboutus/getoption')}",'add');
+        la_defind.showimg(['jpg', 'jif', 'png'], true);
+        const demo=layedit.build("demo"); //建立编辑器
+        //监听提交
+        form.on("submit(formDemo)", function (data) {
+            //获得上传文件
+            const file_obj = document.getElementById('files').files;
+            const sortname = $("select option:checked").val();
+            const content = layedit.getContent(demo);
+            const publish = $("input[name='publish']:checked").val();
+            const formData = new FormData();
+            // 判断是否有文件进行上传
+            if(file_obj) {
+                for(let i=0;i<file_obj.length;i++) {
+                    formData.append('files[]', file_obj[i]);
+                }
+            };
+            formData.append('sortname', sortname);
+            formData.append('content', content);
+            formData.append('publish', publish);
+            // 添加数据发送的请求
+            la_defind.addfiles("{:url('admin/aboutus/save')}",formData,'{:url("admin/aboutus/index")}');
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+		<script src="__JS__/fun.js"></script>
+		<link rel="stylesheet" href="__CSS__/common.css" />
+		<script src="__JS__/layuiadmin/layui/layui.js"></script>
+		<title>Document</title>
+		<style>
+			img {
+				width: 300px!important;
+				height: 100%!important;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="layui-form" style="width: 500px;">
+			<div class="layui-form-item">
+				<label class="layui-form-label">标题</label>
+				<div class="layui-input-block">
+					<input
+						type="text"
+						name="title"
+						required
+						lay-verify="required"
+						placeholder="请输入标题"
+						autocomplete="off"
+						class="layui-input"
+						value="{$res.title}"
+						data-id="{$res.id}"
+					/>
+				</div>
+            </div>
+			<div class="layui-form-item" id="img_upload">
+				<label class="layui-form-label" >文件</label>
+				<div class="layui-input-block">
+					<!-- //TODO -->
+					<input type="file" name="img" id="files" />
+					<span>文件上传</span>
+					<img src="/uploads/{$res.img}"   id="upload_img_show" />
+
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">发布</label>
+				<div class="layui-input-block">
+					<input type="radio" name="publish" value="发布" title="发布" {if ($res.publish == '发布')}checked {/if}/>
+					<input
+						type="radio"
+						name="publish"
+						value="草稿"
+						title="草稿"
+						{if ($res.publish == '草稿')}checked {/if}
+					/>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="formDemo" lay-submit>
+						立即提交
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.config({
+				base:'__JS__/'
+			})
+			layui.use(["form", "layedit",'layui_defind','jquery','layer'], function () {
+				const form = layui.form;
+				const layedit = layui.layedit;
+				const la_defind = layui.layui_defind;
+				const $ = layui.jquery;
+				const layer = layui.layer;
+				la_defind.showimg(['jpg','gif','png'],true);
+				//监听提交
+				form.on("submit(formDemo)", function (data) {
+					const file_obj = document.getElementById('files').files[0];
+					const title = $("input[name='title']").val();
+					const id = $("input[name='title']").attr('data-id');
+					const publish = $("input[name='publish']:checked").val();
+					const formData = new FormData();
+					if(file_obj) {
+						formData.append('files',file_obj);
+						formData.append('isupfile','true');
+					};
+					console.log(file_obj);
+					formData.append('title',title);
+					formData.append('id',id);
+					formData.append('publish',publish);
+					$.ajax({
+						type: 'post',
+						url: "{:url('admin/system/banner_update')}",
+						data: formData,
+						dataType: 'json',
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function (res) {
+							layer.msg(res.msg);
+							parent.layer.closeAll();
+						},
+						error: function (res) {
+							layer.msg(res.msg)
+						}
+					})
+				});
+			});
+		</script>
+	</body>
+</html>

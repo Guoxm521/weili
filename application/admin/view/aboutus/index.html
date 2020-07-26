@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+        <script src="__JS__/fun.js"></script>
+        <link rel="stylesheet" href="__CSS__/common.css">
+        <script src="__JS__/layuiadmin/layui/layui.js"></script>
+		<title>Document</title>
+        <style>
+            span {
+                cursor: pointer;
+            }
+        </style>
+	</head>
+	<body>
+		<div class="layui-card">
+			<div class="layui-card-header" style="padding: 10px;">
+                <button type="button" class="layui-btn" onclick="location.href='{:url('admin/aboutus/add')}'">添加</button>
+            </div>
+			<div class="layui-card-body">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="200" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>类别名称</th>
+                            <th>内容</th>
+                            <th>发布</th>
+                            <th>浏览次数</th>
+                            <th>发布时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $res as $v}
+                        <tr>
+                            <td>{$v.sortname}</td>
+                            <td class="get_content" data-id="{$v.id}">查看内容</td>
+                            <td>
+                                {if $v.publish == '发布'}
+                                <span class="check_yes" value="{$v.publish}" data-id="{$v.id}"><i class="layui-icon layui-icon-ok"></i>是</span>
+                                {elseif $v.publish == '草稿'}
+                                <span class="check_no" value="{$v.publish}" data-id="{$v.id}"><i class="layui-icon layui-icon-close"></i>否</span>
+                                {/if}
+                            </td>
+                            <td>{$v.views}</td>
+                            <td>{$v.add_time}</td>
+                            <td>
+
+                                <button
+                                    type="button"
+                                    data-id="{$v.id}"
+                                    onclick="location.href='{:url('admin/aboutus/modify')}?id={$v.id}'"
+                                    class="layui-btn layui-btn-warm layui-btn-sm"
+                                >
+                                    修改
+                                </button>
+                                <button
+                                    data-id="{$v.id}"
+                                    type="button"
+                                    class="layui-btn layui-btn-danger layui-btn-sm delete"
+                                >
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <script >
+            layui.config({
+                base:'__JS__/'
+            });
+            layui.use(['layui_defind','jquery'],function() {
+                const $ =layui.jquery;
+                const la_defind = layui.layui_defind;
+                //元素删除
+                $('.delete').on('click', function () {
+                    const id = $(this).attr('data-id');
+                    la_defind.delete({id: id}, "{:url('admin/aboutus/delete')}")
+                })
+                la_defind.page();
+                //点击获取内容按钮
+                la_defind.get_content("{:url('admin/aboutus/getcontent')}",["400px", "300px"],);
+                //点击发布按钮  修改发布情况
+                la_defind.publish("{:url('admin/aboutus/changepublish')}");
+            });
+        </script>
+	</body>
+</html>

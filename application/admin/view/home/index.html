@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <link href="__CSS__/common.css" rel="stylesheet">
+
+    <script src="__JS__/echarts.min.js"></script>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <title>Document</title>
+    <style>
+        .layui-col-xs3 li {
+            text-align: center;
+        }
+
+        .layui-icon {
+            display: inline-block;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 2px;
+            font-size: 30px;
+            background-color: #F8F8F8;
+            color: #333;
+        }
+
+        .layui-col-xs3 {
+            text-align: center;
+        }
+
+        cite {
+            position: relative;
+            top: 2px;
+            display: block;
+            color: #666;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .layadmin-backlog-body {
+            display: block;
+            padding: 13px 15px;
+            background-color: #f8f8f8;
+            color: #999;
+            border-radius: 2px;
+            transition: all .3s;
+            -webkit-transition: all .3s;
+        }
+
+        .layadmin-backlog-body h3 {
+            padding-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .layadmin-backlog-body p cite {
+            font-style: normal;
+            font-size: 30px;
+            font-weight: 300;
+            color: #009688;
+        }
+
+        .layui-table th, td {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md8">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">快捷方式</div>
+                    <div class="layui-card-body">
+                        <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                            <ul class="layui-row layui-col-space10">
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/news/add')}">
+                                            <i class="layui-icon layui-icon-console"></i>
+                                            <cite>新闻发布</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/ent_services/add')}">
+                                            <i class="layui-icon layui-icon-chart"></i>
+                                            <cite>企业发布</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/emp_services/add')}">
+                                            <i class="layui-icon layui-icon-template-1"></i>
+                                            <cite>员工发布</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/job/job_info')}">
+                                            <i class="layui-icon layui-icon-download-circle"></i>
+                                            <cite>上传文件</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/job/job_info')}">
+                                            <i class="layui-icon layui-icon-find-fill"></i>
+                                            <cite>招聘发布</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/job/job_news')}">
+                                            <i class="layui-icon layui-icon-survey"></i>
+                                            <cite>职场快讯</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="{:url('admin/onlinemessage/index')}">
+                                            <i class="layui-icon layui-icon-user"></i>
+                                            <cite>留言表</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3 layui-nav-item" data-name="template">
+                                        <a lay-href="{:url('admin/emp_services/index')}"  lay-tips="员工服务" lay-direction="2">
+                                            <i class="layui-icon layui-icon-user"></i>
+                                            <cite>员工服务</cite>
+                                        </a>
+                                    </li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">待办事项</div>
+                    <div class="layui-card-body">
+
+                        <ul class="layui-row layui-col-space10">
+                            <li class="layui-col-xs6">
+                                <a class="layadmin-backlog-body" lay-href="app/content/comment.html">
+                                    <h3>待发新闻</h3>
+                                    <p><cite>{$news}</cite></p>
+                                </a>
+                            </li>
+                            <li class="layui-col-xs6">
+                                <a class="layadmin-backlog-body" lay-href="app/forum/list.html">
+                                    <h3>待发招聘</h3>
+                                    <p><cite>{$job_message}</cite></p>
+                                </a>
+                            </li>
+                            <li class="layui-col-xs6">
+                                <a class="layadmin-backlog-body" lay-href="template/goodslist.html">
+                                    <h3>待审留言</h3>
+                                    <p><cite>{$message}</cite></p>
+                                </a>
+                            </li>
+                            <li class="layui-col-xs6">
+                                <a class="layadmin-backlog-body" href="javascript:;"
+                                   onclick="layer.tips('不跳转', this, {tips: 3});">
+                                    <h3>待看求职</h3>
+                                    <p><cite>{$job_message}</cite></p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row " style="margin-top: 10px">
+            <div class="layui-card">
+                <div class="layui-card-header">新闻发布详情</div>
+                <div class="layui-card-body" style="height: 100%;">
+                    <div id="column" style="width: 100;height: 290px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md4">
+        <div class="layui-card" style="margin-bottom: 10px">
+            <div class="layui-card-header">管理员信息</div>
+            <div class="layui-card-body" style="height: 178px">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td>作者姓名</td>
+                        <td>
+                            {$res.name}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>联系方式</td>
+                        <td>
+                            {$res.tel}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>座右铭</td>
+                        <td>{$res.content}</td>
+                    </tr>
+                    <tr>
+                        <td>获取渠道</td>
+                        <td style="padding-bottom: 0;">
+                            <div class="layui-btn-container">
+                                <a class="layui-btn layui-btn-danger" href="http://www.layui.com/admin/"
+                                   target="_blank">获取授权</a>
+                                <a class="layui-btn" href="http://fly.layui.com/download/layuiAdmin/" target="_blank">立即下载</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-header">企业服务发布详</div>
+            <div class="layui-card-body" style="height: 290px">
+                <div id="pie" style="width: 100;height: 290px;"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 基于准备好的dom，初始化echarts实例
+        const column = echarts.init(document.getElementById('column'));
+        const pie = echarts.init(document.getElementById('pie'));
+        layui.use(['jquery','layer'],function () {
+            const $ = layui.jquery;
+            const layer = layui.layer;
+            $.ajax({
+                type:'post',
+                url:"{:url('admin/home/echart')}",
+                dataType:'json',
+                success:function (res) {
+                    // 柱状图
+                    const columnoption = {
+                        title: {
+                            text: ''
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['发布','草稿']
+                        },
+                        xAxis: {
+                            data: res['newsList']
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '发布',
+                            type: 'bar',
+                            data: res['newspublish']
+                        },{
+                            name: '草稿',
+                            type: 'line',
+                            smooth:true,
+                            data: res['newsdraft']
+                        }]
+                    };
+                    column.setOption(columnoption);
+                    // 饼图
+                        const entpublishArr = [];
+                    for(let i=0;i<res['entList'].length;i++) {
+                        entpublishArr[i] = {value:res['entpublish'][i],name:res['entList'][i]};
+                    };
+                    const pieoption = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b}: {c} ({d}%)'
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 10,
+                            data: res['entList']
+                        },
+                        series: [
+                            {
+                                name: '访问来源',
+                                type: 'pie',
+                                radius: ['50%', '70%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true,
+                                        fontSize: '30',
+                                        fontWeight: 'bold'
+                                    }
+                                },
+                                labelLine: {
+                                    show: false
+                                },
+                                data: entpublishArr
+                            }
+                        ]
+                    };
+                    pie.setOption(pieoption)
+                }
+            })
+        })
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+		<script src="__JS__/layuiadmin//layui/layui.js"></script>
+		<title>Document</title>
+		<style>
+			.layui-form {
+				width: 500px;
+				margin-left: -20px;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-form" >
+			<div class="layui-form-item">
+				<label class="layui-form-label">链接标题</label>
+				<div class="layui-input-block">
+					<input
+						type="text"
+						name="title"
+						required
+						lay-verify="required"
+						placeholder="请输入分类名称"
+						autocomplete="off"
+						class="layui-input"
+					/>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">链接地址</label>
+				<div class="layui-input-block">
+					<input
+						type="text"
+						name="linkname"
+						required
+						lay-verify="required"
+						placeholder="请输入链接名称"
+						autocomplete="off"
+						class="layui-input"
+					/>
+					<input type="hidden" name="parent_id" />
+				</div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">发布</label>
+        <div class="layui-input-block">
+          <input type="radio" name="publish" value="发布" title="发布">
+          <input type="radio" name="publish" value="草稿" title="草稿" checked>
+        </div>
+      </div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="formDemo">
+						立即提交
+					</button>
+					<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			layui.config({
+				base:'__JS__/'
+			});
+			layui.use(['form','jquery','layui_defind','layer'], function () {
+				const form = layui.form;
+				const $ = layui.jquery;
+				const layer = layui.layer;
+				const la_defind = layui.layui_defind;
+				$("button[type='reset']").on('click',function () {
+					parent.layer.closeAll();
+				})
+				//监听提交
+				form.on("submit(formDemo)", function (data) {
+					const title = $("input[name='title']").val();
+					const linkname = $("input[name='linkname']").val();
+					const publish = $("input[name='publish']:checked").val();
+					$.ajax({
+						type: 'post',
+						url: '/admin/system/links_save',
+						data: {
+							title: title,
+							link: linkname,
+							publish:publish
+						},
+						success: function () {
+							parent.layer.closeAll();
+							parent.location.reload();
+						},
+						error: function (err) {
+							console.log(err);
+						}
+					})
+				});
+			});
+		</script>
+	</body>
+</html>

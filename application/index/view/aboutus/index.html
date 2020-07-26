@@ -1,0 +1,74 @@
+{include file="common/header"}
+
+<!-- 关于我们主体部分 -->
+<div class="container" id="aboutus">
+    <div class="title">
+        <h3>关于我们</h3>
+        <p>坚持开源，不断创新</p>
+    </div>
+    <div class="introduction">
+        <div class="left">
+                <img alt="" src="/uploads/{$intro.img[0]}"/>
+        </div>
+        <div class="right">
+            <div>
+                <span>{$intro.sortname}</span>
+            </div>
+            {$intro.content|raw}
+        </div>
+    </div>
+    <div class="culture">
+        <h1>
+            {$culture.sortname}
+            <span></span>
+        </h1>
+        <div class="culture-content">
+            <div class="left">
+                {$culture.content|raw}
+            </div>
+            <div class="right">
+                <img alt="" src="__HIMG__/duo.png"/>
+            </div>
+        </div>
+    </div>
+    <div class="honor">
+        <h1>
+            荣誉资质
+            <span></span>
+        </h1>
+        <div class="honor-content swiper-container">
+            <div class="swiper-wrapper">
+                {foreach $honour.img as $v}
+                <div class="swiper-slide">
+                    <img alt="" src="/uploads/{$v}"/>
+                </div>
+                {/foreach}
+            </div>
+            <!-- 如果需要导航按钮 -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="__HJS__/swiper/swiper.min.css">
+<script src="__HJS__/swiper/swiper.min.js"></script>
+<script>
+    const swiper = new Swiper(".swiper-container", {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        loop: true,
+        autoplay: true,
+        // 如果需要前进后退按钮
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+</script>
+
+{include file="common/footer"}

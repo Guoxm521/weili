@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+        <link rel="stylesheet" href="__CSS__/common.css">
+        <script src="__JS__/layuiadmin/layui/layui.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+
+		<div class="layui-card">
+            <div class="layui-card-header" style="padding: 10px;">
+                <button type="button" class="layui-btn add" >添加</button>
+            </div>
+			<div class="layui-card-body">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="200" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>文件标题</th>
+                            <th>下载次数</th>
+                            <th>发布</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $res as $v}
+                        <tr>
+                            <td>{$v.title}</td>
+                            <td>{$v.times}</td>
+                            <td>
+                                {if $v.publish == '发布'}
+                                <span class="check_yes" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-ok"></i>是</span>
+                                {elseif $v.publish == '草稿'}
+                                <span class="check_no" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-close"></i>否</span>
+                                {/if}
+                            </td>
+                            <td>{$v.add_time}</td>
+                            <td>
+                                <button
+                                        class="layui-btn layui-btn-danger layui-btn-sm delete"
+                                        data-id="{$v.id}"
+                                        type="button"
+                                >
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <script >
+            layui.config({
+                base:'__JS__/'
+            });
+            layui.use(['layui_defind','form','jquery','layer'],function() {
+                const la_defind = layui.layui_defind;
+                const form = layui.form;
+                const $ = layui.jquery;
+                //添加文件
+                $('.add').on('click',function () {
+                    layer.open({
+                        type: 2,
+                        title: '文件添加',
+                        closeBtn: 1,
+                        shadeClose: true,
+                        area: ["600px", "350px"],//
+                        offset: ["100px"],
+                        anim: 2,
+                        content: ["{:url('admin/system/download_add')}", scroll], //iframe的url，no代表不显示滚动
+                    });
+                })
+                //修改发布情况
+                la_defind.publish("{:url('admin/system/download_changepublish')}");
+                //元素删除
+                $('.delete').on('click', function () {
+                    const id = $(this).attr('data-id');
+                    la_defind.delete({id: id}, "{:url('admin/system/download_delete')}")
+                });
+                la_defind.page({$count},8,{$curr});
+            });
+
+
+        </script>
+	</body>
+</html>

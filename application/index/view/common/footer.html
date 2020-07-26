@@ -1,0 +1,29 @@
+<footer>
+    <div class="container">
+        <div class="xinxi">
+
+            {volist name='contact_footer' id="v"}
+            {if $v.title == '公司名称'}
+            <h3>{$v.content}</h3>
+            {else}
+            <p>{$v.title}：{$v.content}</p>
+            {/if}
+            {/volist}
+        </div>
+        <div class="liebiao">
+            <ul class="list1">
+                {volist name='$list1' id='v'}
+                <li><a href="/index/{$v.linkname}">{$v.sortname}</a></li>
+                {/volist}
+            </ul>
+            <ul class="list2">
+                {volist name='$list2' id='v'}
+                <li><a href="/index/{$v.linkname}">{$v.sortname}</a></li>
+                {/volist}
+            </ul>
+        </div>
+        <div class="img">
+            <img src="__HIMG__/erweima.png " alt="">
+        </div>
+    </div>
+</footer>

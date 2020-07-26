@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <!--		<script src="__JS__/fun.js"></script>-->
+    <title>Document</title>
+    <style>
+        body {
+            margin: 10px;
+        }
+
+        .layui-table th {
+            text-align: center;
+        }
+
+        .layui-table td:not(:nth-child(3)) {
+            text-align: center;
+        }
+        .layui-card-header {
+            padding: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">
+        <button class="layui-btn add-first" type="button">
+            增加一级分类
+        </button>
+    </div>
+    <div class="layui-card-body">
+        <div class="main">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150"/>
+                    <col width="200"/>
+                    <col/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>层级</th>
+                    <th>类别名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $list as $v}
+                {if $v.level != 1}
+                <tr data-id="{$v.id}" parent-id="{$v.parent_id}" level="{$v.level}" style="display: none">
+                    <td>{$v.id}</td>
+                    <td>{$v.level}</td>
+                    <td>{$v.space}{$v.sortname}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-sm add-son" type="button" value="{$v.id}">增加</button>
+                        <button
+                                class="layui-btn layui-btn-warm layui-btn-sm change"
+                                type="button"
+                                value="{$v.id}"
+                        >
+                            修改
+                        </button>
+                        <button
+                                class="layui-btn layui-btn-danger layui-btn-sm delete"
+                                type="button"
+                                value="{$v.id}"
+                        >
+                            删除
+                        </button>
+                    </td>
+                </tr>
+                {else /}
+                <tr data-id="{$v.id}" level="{$v.level}">
+                    <td>{$v.id}</td>
+                    <td>{$v.level}</td>
+                    <td>{$v.space}{$v.sortname}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-sm add-son" type="button" value="{$v.id}">增加</button>
+                        <button
+                                class="layui-btn layui-btn-warm layui-btn-sm change"
+                                type="button"
+                                value="{$v.id}"
+                        >
+                            修改
+                        </button>
+                        <button
+                                class="layui-btn layui-btn-danger layui-btn-sm delete"
+                                type="button"
+                                value="{$v.id}"
+                        >
+                            删除
+                        </button>
+                    </td>
+                </tr>
+                {/if}
+
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    layui.config({
+        base: '__JS__/'
+    })
+    layui.use(["layer", "layui_defind", "jquery"], function () {
+        const layer = layui.layer;
+        const $ = layui.jquery;
+        const la_defind = layui.layui_defind;
+        //一级标题添加
+        $('.add-first').on('click', function () {
+            la_defind.add('添加一级标题', ['500px', '215px'], './add.html', 'no');
+        });
+        //子类添加
+        $('.add-son').on('click', function () {
+            const parent_id = $(this).attr('value');
+            la_defind.add('添加标题', ['500px', '215px'], "{:url('admin/sort/add')}?id=" + parent_id, 'no');
+        });
+        //元素删除
+        $('.delete').on('click', function () {
+            const id = $(this).attr('value');
+            la_defind.delete({id: id}, "{:url('admin/sort/delete')}")
+        })
+        //修改
+        $('.change').on('click',function () {
+            const id =$(this).attr('value');
+            la_defind.add('信息修改',['500px','215px'],"{:url('admin/sort/add')}?id=" + id+"&type=change", 'no');
+        })
+
+        //给表格每行注册一个事件   点击显示子一行
+        var onOff = 1;
+        $("tr[level=1]").on('click',function () {
+            if (onOff ==1 ) {
+                const id =$(this).attr('data-id');
+                $("tr[parent-id = '"+id+"']").css({'display':'table-row'});
+                onOff = 2;
+            } else {
+                const id =$(this).attr('data-id');
+                $("tr[parent-id = '"+id+"']").css({'display':'none','backgroud':'#666'});
+                onOff =1;
+            }
+
+        })
+    });
+
+
+</script>
+</body>
+</html>

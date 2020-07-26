@@ -1,0 +1,65 @@
+<div class="news-content">
+	<div id="jobs-message">
+		<div class="left"><img src="__HIMG__/ia_200000002.jpg" alt=""></div>
+		<div class="right">
+			<li>
+				<label for="">姓名：</label>
+				<input type="text" name="name">
+			</li>
+			<li>
+				<label for="">性别：</label>
+				<input type="radio" name="sex" checked value="男">男
+				<input type="radio" name="sex" value="女">女
+			</li>
+			<li>
+				<label for="">手机号码：</label>
+				<input type="text" name="tel">
+			</li>
+			<li>
+				<label for="">意向工作：</label>
+				<textarea name="work" id="" cols="30" rows="10"></textarea>
+			</li>
+			<li>
+				<input type="button" value="提交">
+			</li>
+		</div>
+	</div>
+</div>
+<script>
+	$(function () {
+		$('input[type="button"]').on("click",function () {
+			const name = $("input[name='name']").val();
+			const sex = $("input[name='sex']:checked").val()
+			const tel = $("input[name='tel']").val();
+			const work = $("textarea").val();
+			if(!name || !tel || !work ) {
+				alert("请输入完整的数据");
+			}else if( !/^1(3|4|5|6|7|8|9)\d{9}$/.test(tel)) {
+				alert('手机号错误，请重新填写')
+			}else {
+				$.ajax({
+					type:'post',
+					url:"{:url('index/jobs/save')}",
+					data:{
+						name,
+						tel,
+						work,
+						sex,
+					},
+					dataType:'json',
+					success:function (res) {
+						if(res.code==1) {
+							alert(res.msg)
+						}else {
+							alert(res.msg);
+						}
+						$("input[name='name']").val("");
+						$("input[name='tel']").val("");
+						$("textarea").val("");
+					}
+				})
+			}
+		})
+
+	})
+</script>

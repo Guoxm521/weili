@@ -1,0 +1,31 @@
+{include file='common/header'}
+		<!-- 新闻展示的主题部分 -->
+		<div id="news-show" class="container">
+			<div class="title">
+				<h3>企业服务</h3>
+				<p>提供最有价值的人力资源服务和解决方案，持续为客户创造最大的价值</p>
+				<ul>
+					{foreach $ent_nav as $v}
+					{if $v.id == $classid}
+					<li class="current_title"><a href="{:url('index/entservice/index')}?classid={$v.id}">{$v.sortname}</a></li>
+					{else}
+					<li><a href="{:url('index/entservice/index')}?classid={$v.id}">{$v.sortname}</a></li>
+					{/if}
+					{/foreach}
+				</ul>
+			</div>
+			<div class="content">
+				<div class="content-title">
+					<h1>{$res.title}</h1>
+					<p>
+						<span>发布时间：{$res.add_time|date="Y-m-d H:i:s"}</span>
+						<span>浏览次数:{$res.views}</span>
+					</p>
+				</div>
+				<div class="content-main">
+					{$res.content|raw}
+				</div>
+            </div>
+        </div>
+        
+{include file="common/footer"}

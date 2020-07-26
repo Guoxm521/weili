@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="__JS__/layuiadmin/layui/css/layui.css" />
+        <script src="__JS__/fun.js"></script>
+        <link rel="stylesheet" href="__CSS__/common.css">
+        <script src="__JS__/layuiadmin/layui/layui.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+
+		<div class="layui-card">    
+			<div class="layui-card-body">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="200" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>手机号码</th>
+                            <th>留言信息</th>
+                            <th>添加时间</th>
+                            <th>审阅</th>
+                            <th>审阅时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $res as $v}
+                        <tr>
+                            <td>{$v.name}</td>
+                            <td>{$v.tel}</td>
+                            <td>{$v.message}</td>
+                            <td>{$v.add_time}</td>
+                            <td>
+                                {if $v.publish == '已审核'}
+                                <span class="check_yes" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-ok"></i>是</span>
+                                {elseif $v.publish == '未审核'}
+                                <span class="check_no" data-id="{$v.id}" value="{$v.publish}"><i
+                                        class="layui-icon layui-icon-close"></i>否</span>
+                                {/if}
+                            </td>
+
+                            <td>{$v.verify_time}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <script >
+            layui.config({
+                base:'__JS__/'
+            });
+            layui.use(['layui_defind','form','jquery','layer'],function() {
+                var la_defind = layui.layui_defind;
+                var form = layui.form;
+                const $ = layui.jquery;
+                const layer = layui.layer;
+                form.render(null, 'test1');
+                la_defind.page();
+                la_defind.get_content();
+                la_defind.page({$count},10,{$curr});
+
+                $("span[class^='check']").on('click',function () {
+                    if($(this).attr('value')=='已审核') {
+                        layer.msg('已审核');
+                        return false;
+                    }else  {
+                        const publish = $(this).attr('value');
+                        const id = $(this).attr('data-id');
+                        if ($(this).attr("class") == "check_yes") {
+                            $(this)
+                                .removeClass("check_yes")
+                                .addClass("check_no")
+                                .html("<i class='layui-icon layui-icon-close'></i>否");
+                        } else {
+                            $(this)
+                                .removeClass("check_no")
+                                .addClass("check_yes")
+                                .html("<i class='layui-icon layui-icon-ok'></i>是");
+                        }
+                        $.ajax({
+                            type:'post',
+                            url:"{:url('admin/onlinemessage/changeverify')}",
+                            data:{
+                                publish:publish,
+                                id:id
+                            },
+                            success:function () {
+                                location.reload();
+                            }
+                        })
+                    }
+                })
+            });
+        </script>
+	</body>
+</html>

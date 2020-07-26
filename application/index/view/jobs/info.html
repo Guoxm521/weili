@@ -1,0 +1,39 @@
+<div class="news-content">
+    <ul id="jobsinfo">
+        <li class="bg1 clearfix">
+            <dd width="395">招聘岗位</dd>
+            <dd>招聘部门</dd>
+            <dd>学历要求</dd>
+            <dd>预计薪资</dd>
+            <dd>聘人数</dd>
+            <dd>发布时间</dd>
+        </li>
+        {volist name='list' id='v'}
+        <li class="bg1 clearfix">
+            <dd>{$v.station}</dd>
+            <dd>{$v.department}</dd>
+            <dd>{$v.degree}</dd>
+            <dd>{$v.salary}</dd>
+            <dd>{$v.people}</dd>
+            <dd>{$v.add_time|date="Y-m-d H:i:s"}  ></dd>
+            <ul class="detail">
+                <li >
+                    <h5>岗位职责</h5>
+                    <p>{$v.response|raw}</p>
+                </li>
+                <li>
+                    <h5>岗位要求</h5>
+                    <p>{$v.demand|raw}</p>
+                </li>
+                <li>
+                    <h5>福利待遇</h5>
+                    <p>{$v.benefit|raw}</p>
+                </li>
+            </ul>
+        </li>
+        {/volist}
+    </ul>
+</div>
+<div id="paging">
+    {$page|raw}
+</div>

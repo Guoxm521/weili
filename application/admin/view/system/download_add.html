@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/fun.js"></script>
+    <link href="__CSS__/common.css" rel="stylesheet"/>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <title>Document</title>
+    <style>
+        .filename {
+            display: block;
+            width:200px ;
+            height: 30px;
+            font-size: 18px;
+            font-weight: 400px;
+            border: 1px dotted red;
+            margin-top:15px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form" style="width: 500px;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="title" placeholder="请输入标题" required
+                   type="text">
+        </div>
+    </div>
+    <div class="layui-form-item " id="img_upload">
+        <label class="layui-form-label">文件</label>
+        <div class="layui-input-block">
+            <input name="files" type="file" id="files"/>
+            <span>文件上传</span>
+            <h3 class="filename">请上传文件...</h3>
+<!--            <img alt="" id="upload_img_show" src="__IMG__/ia.jpg"/>-->
+        </div>
+    </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">发布</label>
+		<div class="layui-input-block">
+			<input type="radio" name="publish" value="发布" title="发布" />
+			<input
+					type="radio"
+					name="publish"
+					value="草稿"
+					title="草稿"
+					checked
+			/>
+		</div>
+	</div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="formDemo" lay-submit>
+                立即提交
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+	layui.config({
+		base:'__JS__/'
+	});
+    layui.use(["form", "layedit",'layui_defind','jquery','layer'], function () {
+        const form = layui.form;
+        const layedit = layui.layedit;
+		const la_defind = layui.layui_defind;
+		const $ = layui.jquery;
+		const layer = layui.layer;
+        $("input[name='files']").on('change',function () {
+            const file_obj = document.querySelector("#files").files[0];
+            const filename = file_obj['name'];
+            console.log(filename);
+            $(".filename").html(filename);
+        })
+        form.on("submit(formDemo)", function (data) {
+        	const title = $("input[name='title']").val();
+        	const publish = $("input[name='publish']:checked").val();
+        	const file_obj = document.querySelector("#files").files[0];
+        	//判断文件上传
+			if(!file_obj) {
+				layer.msg('请上传文件！',{time:2000,icon:5});
+				return false;
+			}else {
+				//文件类型判断处理
+				const filename = file_obj['name'];
+				const first=filename.lastIndexOf('.');
+				const namelength = filename.length;
+				const file_postfix = filename.substr(first+1,namelength);
+				const filetype = ['pdf','md','word','txt','zip','doc','docx','jpg','jpeg','gif'];
+				if(!filetype.includes(file_postfix)){
+					layer.msg('请上传正确类型的文件',{time:2000,icon:5});
+					return false;
+				};
+				//文件大小的判断处理
+				const filesize = file_obj['size']/1024; //kb
+				if(filesize > 2048) {
+					layer.msg('请上传小于2MB的文件',{time:2000,icon:5})
+					return false;
+				};
+				const formData = new FormData();
+				formData.append('title',title);
+				formData.append('publish',publish);
+				formData.append('file',file_obj);
+				$.ajax({
+					type: 'post',
+					url: "{:url('admin/system/download_save')}",
+					data: formData,
+					dataType: 'json',
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function (res) {
+						parent.layer.closeAll();
+						parent.location.reload();
+					},
+					error: function (res) {
+						layer.msg(res.msg)
+					}
+				})
+
+			}
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="__JS__/layuiadmin/layui/css/layui.css" rel="stylesheet"/>
+    <script src="__JS__/fun.js"></script>
+    <link href="__CSS__/common.css" rel="stylesheet"/>
+    <script src="__JS__/layuiadmin/layui/layui.js"></script>
+    <title>Document</title>
+    <style>
+        .layui-input {
+            display: inline-block;
+            width: 150px;
+            margin-right: 5px;
+        }
+        .content {
+            width: 300px;
+        }
+        .layui-row {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">联系我们</div>
+    <div class="layui-card-body layui-container input-boxs">
+        {foreach $res as $v}
+        <div class="layui-row">
+            <div class="layui-col-md5 row" >
+                <input class="layui-input title" disabled name="title[]" value="{$v.title}">--
+                <input class="layui-input content" name="content[]" disabled value="{$v.content}">
+            </div>
+            <div class="layui-col-md2">
+                <button class="layui-btn  layui-btn-danger delete" style="margin-left: 7px" type="button" data-id="{$v.id}">删除</button>
+            </div>
+        </div>
+        {/foreach}
+    </div>
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md4" style="margin-bottom: 15px">
+                <button class="layui-btn layui-btn-warm modify " type="reset">修改</button>
+                <button class="layui-btn layui-btn-normal add" type="reset">添加</button>
+                <button class="layui-btn save" lay-submit>提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.config({
+        base: '__JS__/'
+    })
+    layui.use(["form", "layedit", "layui_defind", "jquery"], function () {
+        const form = layui.form;
+        const $ = layui.jquery;
+        const layedit = layui.layedit;
+        //html模板
+        const html = `
+        <div class="layui-row">
+            <div class="layui-col-md5 row" >
+                <input class="layui-input title" name="title[]">--
+                <input class="layui-input content" name="content[]">
+            </div>
+            <div class="layui-col-md2">
+                <button class="layui-btn  layui-btn-danger delete" style="margin-left: 7px" type="button">删除</button>
+            </div>
+        </div>
+            `;
+        $('.add').on('click', function () {
+            $('.input-boxs').append(html);
+        })
+        $(".save").on('click',function () {
+            const titlearr = $('input[name="title[]"]');
+            const contentarr = $('input[name="content[]"]');
+            const titleList = [];
+            const contentList = [];
+            titlearr.each(function (index,element) {
+                if(element.value) {
+                    titleList.push(element.value);
+                }
+            });
+            contentarr.each(function (index,element) {
+                if(element.value) {
+                    contentList.push(element.value);
+                }
+            });
+            if(titlearr.length !== titleList.length || contentarr.length !== contentList.length) {
+                layer.msg('请将信息填写完整。',{time:2000,icon:5})
+                return false;
+            };
+            $.ajax({
+                type:'post',
+                url:"{:url('admin/system/contactus_save')}",
+                data:{
+                    titleList:titleList,
+                    contentList:contentList
+                },
+                dataType:'json',
+                success:function (response) {
+                    location.reload();
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            })
+        })
+        $(".delete").on('click',function () {
+            const id =$(this).attr('data-id');
+            $.ajax({
+                type:"post",
+                url:"{:url('admin/system/contactus_delete')}",
+                data:{
+                    id:id
+                },
+                dataType: 'json',
+                success:function (res) {
+                    if(res.code == 1) {
+                        location.reload();
+                    };
+                    layer.msg('删除成功',{time:2000});
+                }
+            })
+        })
+        $(".modify").on('click',function () {
+            $("input").attr('disabled',false).css({'border':'1px solid red'});
+
+        })
+    });
+</script>
+</body>
+</html>
