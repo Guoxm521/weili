@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css" />
+		<script src="./../src/fun.js"></script>
+		<link rel="stylesheet" href="./../src/common.css" />
+		<link
+			rel="stylesheet"
+			href="./../src/utf8-php/themes/default/css/umeditor.min.css"
+		/>
+		<script src="./../src/utf8-php/third-party/jquery.min.js"></script>
+		<script src="./../src/utf8-php/umeditor.config.js"></script>
+		<script src="./../src/utf8-php/umeditor.min.js"></script>
+		<script src="./../src/utf8-php/lang/zh-cn/zh-cn.js"></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="layui-card">
+			<div class="layui-card-header">新闻添加</div>
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">标题</label>
+						<div class="layui-input-block">
+							<input
+								type="text"
+								name="title"
+								required
+								lay-verify="required"
+								placeholder="请输入标题"
+								autocomplete="off"
+								class="layui-input"
+								style="width: 500px;"
+							/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">类别</label>
+						<div class="layui-input-block" style="width: 500px;">
+							<select name="sortname" lay-verify="required">
+								<option value=""></option>
+								<option value="0">北京</option>
+								<option value="1">上海</option>
+								<option value="2">广州</option>
+								<option value="3">深圳</option>
+								<option value="4">杭州</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">发布</label>
+						<div class="layui-input-block">
+							<input type="radio" name="publish" value="发布" title="发布" />
+							<input
+								type="radio"
+								name="publish"
+								value="草稿"
+								title="草稿"
+								checked
+							/>
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">内容</label>
+						<div class="layui-input-block">
+							<script
+								type="text/plain"
+								id="myEditor"
+								style="width: 1000px; height: 300px;"
+							></script>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="formDemo">
+								立即提交
+							</button>
+							<button type="reset" class="layui-btn layui-btn-primary">
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="./../../layuiadmin/layui/layui.js"></script>
+		<script>
+			//实例化编辑器
+			var um = UM.getEditor("myEditor");
+			// 获得内容
+			function getContent() {
+				var arr = [];
+				arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+				arr.push("内容为：");
+				arr.push(UM.getEditor("myEditor").getContent());
+				alert(arr.join("\n"));
+			}
+			// 插入html内容
+			function insertHtml() {
+				var value = prompt("插入html代码", "");
+				um.execCommand("insertHtml", value);
+			}
+			//Demo
+			layui.config({
+				base: "../src/",
+			});
+			layui.use(["form", "layedit", "layui_defind"], function () {
+				var form = layui.form;
+				var layedit = layui.layedit;
+				var la_defind = layui.layui_defind;
+				layedit.build("demo"); //建立编辑器
+				//监听提交
+				form.on("submit(formDemo)", function (data) {
+					layer.msg(JSON.stringify(data.field));
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

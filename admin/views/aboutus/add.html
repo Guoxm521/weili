@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css" />
+		<script src="./../src/fun.js"></script>
+		<link rel="stylesheet" href="./../src/common.css" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="layui-card">
+			<div class="layui-card-header">添加内容</div>
+			<div class="layui-card-body">
+				<form class="layui-form" action="" style="width: 800px;">
+					<div class="layui-form-item">
+						<label class="layui-form-label">类别</label>
+						<div class="layui-input-block">
+							<select name="sortname" lay-verify="required">
+								<option value=""></option>
+								<option value="0">北京</option>
+								<option value="1">上海</option>
+								<option value="2">广州</option>
+								<option value="3">深圳</option>
+								<option value="4">杭州</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item " id="img_upload" >
+						<label class="layui-form-label">图片</label>
+						<div class="layui-input-block" >
+							<!-- //TODO -->
+							<input type="file" name="img"/>
+							<span>文件上传</span>
+							<img src="" alt="" id="upload_img_show" />
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">内容</label>
+						<div class="layui-input-block">
+							<textarea
+								name="content"
+								placeholder="请输入内容"
+								id="demo"
+								style="display: none;"
+							></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="formDemo">
+								立即提交
+							</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		  </div>
+			  
+
+		<script src="./../../layuiadmin/layui/layui.js"></script>
+		<script>
+			//Demo
+			layui.use(["form", "layedit"], function () {
+				var form = layui.form;
+				var layedit = layui.layedit;
+				layedit.build("demo"); //建立编辑器
+				//监听提交
+				form.on("submit(formDemo)", function (data) {
+					layer.msg(JSON.stringify(data.field));
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css" />
+        <script src="./../src/fun.js"></script>
+        <link rel="stylesheet" href="./../src/common.css">
+
+		<title>Document</title>
+	</head>
+	<body>
+
+		<div class="layui-card">
+            
+			<div class="layui-card-body">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="200" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>手机号码</th>
+                            <th>意向工作</th>
+                            <th>添加时间</th>
+                            <th>审核</th>
+                            <th>审核时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>张三</td>
+                            <td>男</td>
+                            <td>15179733513</td>
+                            <td>北京，程序猿</td>
+                            <td>2019-10-25 12:23:32</td>
+                            <td>
+                                <span class="check_yes"><i class="layui-icon layui-icon-ok""></i>是</span>
+                            </td>
+                            <td>2019-10-25 12:23:32</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>张三</td>
+                            <td>男</td>
+                            <td>15179733513</td>
+                            <td>北京，程序猿</td>
+                            <td>2019-10-25 12:23:32</td>
+                            <td>
+                                <span class="check_yes"><i class="layui-icon layui-icon-ok""></i>是</span>
+                            </td>
+                            <td>2019-10-25 12:23:32</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>张三</td>
+                            <td>男</td>
+                            <td>15179733513</td>
+                            <td>北京，程序猿</td>
+                            <td>2019-10-25 12:23:32</td>
+                            <td>
+                                <span class="check_yes"><i class="layui-icon layui-icon-ok""></i>是</span>
+                            </td>
+                            <td>2019-10-25 12:23:32</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <script src="./../../layuiadmin/layui/layui.js"></script>
+        <script >
+            layui.config({
+                base:'../src/'
+            });
+            layui.use(['layui_defind','form'],function() {
+                var la_defind = layui.layui_defind;
+                var form = layui.form;
+                form.render(null, 'test1'); 
+                la_defind.page();
+                la_defind.get_content();
+                la_defind.publish();
+            });
+            function add () {
+                alert(1);
+            }
+
+        </script>
+	</body>
+</html>

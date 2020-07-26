@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./../home/css/common.css" />
+		<script src="./../home/js/jquery-3.5.1.min.js"></script>
+		<title>招聘信息</title>
+	</head>
+	<body>
+		<!-- 公共头部 -->
+		<header>
+			<div class="header-main container">
+				<div class="logo clearfix">
+					<a href="javascript:;">
+						<img src="./../home/image/logo.jpg" alt="" />
+					</a>
+				</div>
+				<div class="right">
+					<div class="right-top">
+						<div class="search">
+							<input type="text" placeholder="请输入搜索关键字" />
+							<a href="javascript:;">
+								<img src="./../home/image/search.png" alt="" />
+							</a>
+						</div>
+						<li>全国服务热线：<span>0791-82203969</span></li>
+					</div>
+					<!--导航栏-->
+					<nav>
+						<ul>
+							<li>
+								<a href="javascript:;">网站首页</a>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+								<ul>
+									<li><a href="javascript:;">劳务派遣</a></li>
+									<li><a href="javascript:;">劳务派遣</a></li>
+									<li><a href="javascript:;">劳务派遣</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+								<ul>
+									<li><a href="javascript:;">劳务派遣</a></li>
+									<li><a href="javascript:;">劳务派遣</a></li>
+									<li><a href="javascript:;">劳务派遣</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+								<ul>
+									<li><a href="javascript:;">劳务派遣</a></li>
+									<li><a href="javascript:;">劳务派遣</a></li>
+									<li><a href="javascript:;">劳务派遣</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+							</li>
+							<li>
+								<a href="javascript:;">网站首页</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</header>
+		<!-- banner图-->
+		<div class="banner">
+			<img src="./../home/image/ia_100000000.jpg" alt="" />
+		</div>
+
+		<!-- 新闻叶的主体部分 -->
+		<div id="news" class="container">
+			<div class="title">
+				<h3>在线留言</h3>
+				<p>提供最有价值的人力资源服务和解决方案，持续为客户创造最大的价值</p>
+				<ul>
+					<li><a href="javascript:;">联系我们</a></li>
+					<li><a href="javascript:;">在线留言</a></li>
+				</ul>
+			</div>
+			<div class="news-content">
+				<div id="online">
+					<div class="left">
+						<h2>
+							我们会做的更好的<br />
+							WE WILL DO BETTER
+						</h2>
+						<p>
+							如果您对我们有什么建议、投诉、需求，可以通过
+							留言告诉我们，我们会在第一时间了解并及时与您联系。
+						</p>
+						<h1>THANKS!</h1>
+					</div>
+					<div class="right">
+						<li>
+							<label for=""> 姓名：</label>
+							<input type="text" />
+						</li>
+						<li>
+							<label for="">手机号码：</label>
+							<input type="text" />
+						</li>
+						<li>
+							<label for="">您的留言</label>
+							<textarea name="" id="" cols="30" rows="10"></textarea>
+						</li>
+						<li>
+							<input type="button" value="提交" />
+						</li>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 底部 -->
+		<footer>
+			<div class="container">
+				<div class="xinxi">
+					<h3>江西为力人力资源服务有限公司</h3>
+					<p>联系电话：13870902569</p>
+					<p>邮箱：2925893696@qq.com</p>
+					<p>QQ:1139455090</p>
+					<p>地址：江西省南昌市顺外路君嘉广场1号楼10楼</p>
+					<p>
+						版权所有 © 2015-2018 江西为力人力资源有限公司
+						技术支持：南昌雅腾信息科技有限公司
+					</p>
+				</div>
+				<div class="liebiao">
+					<ul class="list1">
+						<li><a href="javascript:;">网站首页</a></li>
+						<li><a href="javascript:;">网站首页</a></li>
+						<li><a href="javascript:;">网站首页</a></li>
+					</ul>
+					<ul class="list2">
+						<li><a href="javascript:;">网站首页</a></li>
+						<li><a href="javascript:;">网站首页</a></li>
+						<li><a href="javascript:;">网站首页</a></li>
+					</ul>
+				</div>
+				<div class="img">
+					<img src="./../home/image/erweima.png " alt="" />
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			$(function () {
+				var flag = 1;
+				$(".bg1").on("click", function () {
+					if (flag == 1) {
+						$(this).children("ul").show();
+						flag = 2;
+					} else {
+						$(this).children("ul").hide();
+						flag = 1;
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

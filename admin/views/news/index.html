@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css" />
+        <script src="./../src/fun.js"></script>
+        <link rel="stylesheet" href="./../src/common.css">
+
+		<title>Document</title>
+	</head>
+	<body>
+
+		<div class="layui-card">
+            <div class="layui-card-header" style="padding: 10px;">
+                    <div class="layui-inline" lay-filter="test1" >
+                        <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                    </div>  
+                    <div class="layui-inline">
+                        <select name="city" lay-verify="required" class="layui-select">
+                            <option value="">请选择呀</option>
+                            <option value="0">北京</option>
+                            <option value="1">上海</option>
+                            <option value="2">广州</option>
+                            <option value="3">深圳</option>
+                            <option value="4">杭州</option>
+                          </select>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn" style="margin-top: -3px;">搜索</button>
+                    </div>
+            </div>
+            
+			<div class="layui-card-body">
+                <button type="button" class="layui-btn" onclick="location.href='./add.html'" >添加</button>
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150" />
+                        <col width="200" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>标题</th>
+                            <th>类别</th>
+                            <th>内容</th>
+                            <th>浏览次数</th>
+                            <th>发布</th>
+                            <th>发布时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>静夜思</td>
+                            <td>娱乐新闻</td>
+                            <td class="get_content">查看内容</td>
+                            <td>289</td>
+                            <td>
+                                <span class="check_yes"><i class="layui-icon layui-icon-ok""></i>是</span>
+                            </td>
+                            <td>2019-10-25 12:23:32</td>
+                            <td>
+                                <button
+                                    type="button"
+                                    onclick="edit()"
+                                    class="layui-btn layui-btn-warm layui-btn-sm"
+                                >
+                                    修改
+                                </button>
+                                <button
+                                    type="button"
+                                    onclick="del()"
+                                    class="layui-btn layui-btn-danger layui-btn-sm"
+                                >
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>静夜思</td>
+                            <td>娱乐新闻</td>
+                            <td class="get_content">查看内容</td>
+                            <td>289</td>
+                            <td>
+                                <span class="check_no"><i class="layui-icon layui-icon-close""></i>是</span>
+                            </td>
+                            <td>2019-10-25 12:23:32</td>
+                            <td>
+                                <button
+                                    type="button"
+                                    onclick="edit()"
+                                    class="layui-btn layui-btn-warm layui-btn-sm"
+                                >
+                                    修改
+                                </button>
+                                <button
+                                    type="button"
+                                    onclick="del()"
+                                    class="layui-btn layui-btn-danger layui-btn-sm"
+                                >
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 页码 -->
+            <div id="page"></div>
+            <div style="clear: both;"></div>
+        </div>
+        <script src="./../../layuiadmin/layui/layui.js"></script>
+        <script >
+            layui.config({
+                base:'../src/'
+            });
+            layui.use(['layui_defind','form'],function() {
+                var la_defind = layui.layui_defind;
+                var form = layui.form;
+                form.render(null, 'test1'); 
+                la_defind.page();
+                la_defind.get_content();
+                la_defind.publish();
+            });
+            function add () {
+                alert(1);
+            }
+
+        </script>
+	</body>
+</html>

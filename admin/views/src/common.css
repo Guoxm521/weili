@@ -1,0 +1,65 @@
+body {
+	margin: 10px;
+}
+.layui-table th,
+td {
+	text-align: center;
+}
+/* 自定义是否发布切换按钮 */
+span[class^="check"] {
+	display: block;
+	margin: 0 auto;
+	line-height: 24px;
+	width: 46px;
+	height: 24px;
+	border-radius: 12px;
+	color: #ffffff;
+	font-weight: 500;
+}
+span[class="check_yes"] {
+	background-color: red;
+}
+span[class="check_no"] {
+	background-color: #666666;
+}
+#page {
+	float: right;
+	margin-right: 18px;
+}
+
+/* 照片上传input的样式 */
+#img_upload input {
+	display: block;
+	width: 92px;
+	height: 38px;
+	opacity: 0;
+}
+#img_upload span {
+	width: 92px;
+	height: 38px;
+	display: block;
+	background-color: #009688;
+	margin-top: -38px;
+	line-height: 38px;
+	text-align: center;
+	color: aliceblue;
+}
+#img_upload img {
+	display: block;
+	width: 300px;
+	margin-top: 10px;
+}
+
+/* 修改弹出层的样式 */
+.layui-layer-content {
+	margin: 0 20px;
+}
+
+/* 修改富文本编辑器的zindex=0 */
+.edui-container {
+	z-index: 0 !important;
+}
+/* 卡片card的样式 */
+.layui-card-header {
+	padding: 10px;
+}
