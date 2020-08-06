@@ -31,7 +31,7 @@ class Base extends Controller
      *banner图
      * */
     public function banner($sortname) {
-        $res = Db::name('banner')->where('sortname','=',$sortname)->find();
+        $res = Db::name('banner')->where('sortname','=',$sortname)->where('publish','=','发布')->find();
         $this->assign('banner',$res);
     }
 
